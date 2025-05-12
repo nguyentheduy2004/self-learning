@@ -59,7 +59,8 @@ Git là một hệ thống kiểm soát giúp quản lý mã nguồn trong các 
 - `git log --oneline`: Hiển thị mỗi commit trên một dòng.
 
 - `git log --graph`: Hiển thị biểu đồ nhánh.
-![](./Image/kazSy.png)
+    
+    ![](./Image/kazSy.png)
 - `git log --author=<user.name>`: Filter các commit theo tên tác giả.
 
 ---
