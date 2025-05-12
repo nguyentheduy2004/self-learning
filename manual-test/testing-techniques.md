@@ -79,6 +79,11 @@ Black Box Testing là loại kiểm thử mà người kiểm thử không cần
 - **Lý thuyết**: Sử dụng bảng liệt kê các điều kiện và kết quả tương ứng.
 - **Ví dụ**: Đăng nhập với tổ hợp tài khoản/mật khẩu đúng-sai  
   → Phát hiện lỗi thông báo không rõ ràng
+| Điều kiện       | Quy tắc 1 | Quy tắc 2 | Quy tắc 3 | Quy tắc 4 |
+|-----------------|-----------|-----------|-----------|-----------|
+| **Email (T/F)** | T         | T         | F         | F         |
+| **Mật khẩu (T/F)** | T         | F         | T         | F         |
+| **Kết quả (E/H)** | H         | E         | E         | E         |
 
 ### Kiểm thử luồng trạng thái (State Transition Testing)
 
