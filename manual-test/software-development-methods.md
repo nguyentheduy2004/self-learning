@@ -1,180 +1,186 @@
-# Unit testing - Kiểm thử đơn vị  
-# Integration testing - Kiểm thử tích hợp  
-# System testing - Kiểm thử mức hệ thống  
-# Acceptance testing - Kiểm thử chấp nhận  
+# 1. Waterfall (Mô hình thác nước)
+
+## Khái niệm
+
+Mô hình Waterfall là một phương pháp phát triển phần mềm tuần tự, trong đó các giai đoạn được thực hiện theo thứ tự tuyến tính và chỉ chuyển sang giai đoạn tiếp theo khi giai đoạn hiện tại hoàn tất. Mỗi giai đoạn có đầu ra rõ ràng, đóng vai trò là đầu vào cho giai đoạn tiếp theo.
+
+## Quy trình chi tiết
+
+- **Lập kế hoạch (Planning):** Xác định mục tiêu dự án, phạm vi, ngân sách, nguồn lực, và lịch trình.  
+  **Đầu ra:** Tài liệu kế hoạch dự án (Project Plan).
+
+- **Phân tích yêu cầu (Requirement Analysis):** Thu thập, phân tích, và tài liệu hóa yêu cầu từ khách hàng và người dùng.  
+  **Đầu ra:** Tài liệu yêu cầu phần mềm (Software Requirement Specification - SRS).
+
+- **Thiết kế hệ thống (System Design):** Tạo kiến trúc phần mềm, thiết kế giao diện, cơ sở dữ liệu, và các thành phần kỹ thuật.  
+  **Đầu ra:** Tài liệu thiết kế (Design Document).
+
+- **Phát triển (Implementation/Coding):** Viết mã nguồn dựa trên tài liệu thiết kế.  
+  **Đầu ra:** Mã nguồn phần mềm.
+
+- **Kiểm thử (Testing):** Kiểm tra phần mềm để tìm lỗi và đảm bảo đáp ứng yêu cầu.  
+  **Đầu ra:** Báo cáo kiểm thử và phần mềm đã sửa lỗi.
+
+- **Triển khai (Deployment):** Đưa phần mềm vào môi trường sản xuất.  
+  **Đầu ra:** Phần mềm hoạt động trong môi trường thực tế.
+
+- **Bảo trì (Maintenance):** Sửa lỗi, nâng cấp tính năng dựa trên phản hồi người dùng.  
+  **Đầu ra:** Phiên bản phần mềm cập nhật.
+
+## Đặc điểm
+
+- Quy trình tuyến tính, không cho phép quay lại giai đoạn trước.
+- Mỗi giai đoạn có tài liệu rõ ràng, dễ theo dõi.
+- Phù hợp với các dự án có yêu cầu cố định, ít thay đổi.
+
+## Ưu điểm
+
+- **Dễ quản lý:** Quy trình rõ ràng, dễ theo dõi tiến độ.
+- **Tài liệu đầy đủ:** Mỗi giai đoạn tạo ra tài liệu chi tiết, hỗ trợ bảo trì lâu dài.
+- **Phù hợp với dự án nhỏ hoặc cố định:** Yêu cầu được xác định rõ từ đầu, ít rủi ro thay đổi.
+
+## Nhược điểm
+
+- **Thiếu linh hoạt:** Khó điều chỉnh khi yêu cầu thay đổi.
+- **Phát hiện lỗi muộn:** Lỗi thường chỉ được phát hiện ở giai đoạn kiểm thử, gây tốn kém để sửa.
+- **Không phù hợp với dự án phức tạp:** Các dự án lớn với yêu cầu không rõ ràng dễ thất bại.
+
+## Trường hợp áp dụng
+
+- Các dự án có yêu cầu rõ ràng và không thay đổi, như hệ thống quản lý tài chính doanh nghiệp, phần mềm kế toán.
+- Các dự án ngắn hạn với phạm vi nhỏ.
+- Các dự án trong lĩnh vực yêu cầu độ chính xác cao (như y tế, chính phủ), nơi tài liệu hóa là bắt buộc.
 
 ---
 
-![image](./media/image-20250506-071652.png)
+# 2. V-model
+
+Trong V-model các hoạt động phát triển và đảm bảo chất lượng được thực hiện đồng thời.
+![V-model](./media/image-20250506-071120.png)
+**Kiểm tra trong suốt vòng đời dự án bao gồm:**
+
+- **Xác minh:** Kiểm tra xem sản phẩm có đáp ứng các yêu cầu đã được đề ra cho nó.
+
+  *Ex:* đảm bảo rằng một trang web đang được xây dựng tuân theo các hướng dẫn để làm cho các trang web có thể sử dụng được bởi nhiều người nhất có thể.
+
+- **Xác thực:** Đánh giá sản phẩm so với nhu cầu của người dùng.
+
+  *Ex:* Xác thực sẽ bao gồm những người dùng mới kiểm tra xem họ cũng có thể sử dụng trang web một cách dễ dàng.
+
+### Phía bên tay trái: là hoạt động phát triển
+
+#### Phân tích yêu cầu
+
+- **Xác minh:** Đánh giá yêu cầu (Requirements review).
+- **Xác thực:** Tạo test case UAT (User Acceptance Test).
+- **Đầu ra:** Tài liệu hiểu về yêu cầu, UAT test case.
+
+#### Yêu cầu hệ thống
+
+- **Xác minh:** Đánh giá thiết kế (Design reviews).
+- **Xác thực:** Tạo test plan, test design, test case, automation code (nếu có).
+- **Đầu ra:** Test plan, test design, test case, automation code.
+
+#### Thiết kế kiến trúc
+
+- **Xác minh:** Đánh giá thiết kế.
+- **Xác thực:** Kế hoạch thử nghiệm tích hợp và các trường hợp thử nghiệm.
+- **Đầu ra:** Tài liệu thiết kế, kế hoạch kiểm thử tích hợp, thiết kế bảng cơ sở dữ liệu.
+
+#### Thiết kế module / cấp thấp
+
+- **Xác minh:** Đánh giá thiết kế.
+- **Xác thực:** Tạo và xem xét các trường hợp kiểm tra đơn vị.
+- **Đầu ra:** Các đơn vị kiểm tra đơn vị.
+
+#### Code
+
+- **Xác minh:** Xem xét mã, kiểm tra các trường hợp kiểm tra.
+- **Xác thực:** Tạo các trường hợp kiểm tra chức năng.
+- **Đầu ra:** Các trường hợp thử nghiệm, danh sách kiểm tra xem lại.
+
+### Phía bên tay phải: là hoạt động kiểm thử (Xác nhận)
+
+- **Kiểm tra đơn vị (Unit Test)**
+- **Kiểm tra tích hợp (Integration Testing)**
+- **Kiểm tra hệ thống (System Testing)**
+- **Thử nghiệm chấp nhận của người dùng (User Acceptance Test - UAT)**
+
+### V-model được sử dụng khi:
+
+- Yêu cầu được xác định rõ ràng và không mơ hồ.
+- Tiêu chí chấp nhận được xác định rõ ràng.
+- Dự án có quy mô vừa và nhỏ.
+- Công nghệ và công cụ được sử dụng không thường xuyên thay đổi.
+
+### Ưu điểm
+
+- Quá trình phát triển và quy trình quản lý có tính tổ chức và hệ thống.
+- Hoạt động tốt cho các dự án vừa và nhỏ.
+- Kiểm tra bắt đầu từ đầu, giảm sự mơ hồ.
+- Dễ quản lý với mục tiêu rõ ràng.
+
+### Nhược điểm
+
+- Không thích hợp cho dự án lớn/phức tạp.
+- Không phù hợp khi yêu cầu thay đổi liên tục.
+- Không có phần mềm làm việc ở giai đoạn trung gian.
+- Không phân tích rủi ro, có tính không chắc chắn.
 
 ---
 
-## Unit testing - Kiểm thử mức đơn vị  
+# 3. Agile
 
-### **Định nghĩa**  
-Một đơn vị phần mềm (Unit) là gì? Một Unit là một thành phần phần mềm nhỏ nhất mà ta kiểm tra được.  
-Nó bao gồm các các hàm (Function), thủ tục (Procedure), lớp (Class), hoặc các phương thức (Method).  
+Agile là một phương pháp thúc đẩy sự lặp lại liên tục của quá trình phát triển và kiểm thử trong suốt vòng đời phát triển phần mềm.
 
-Kiểm thử đơn vị nhằm đảm bảo rằng code viết cho đơn vị đáp ứng được yêu cầu cụ thể của nó, trước khi tích hợp với các đơn vị khác.  
+## 4 giá trị cốt lõi
 
-Ngoài việc kiểm tra sự phù hợp với quy định của chương trình, kiểm thử đơn vị cũng xác minh rằng toàn bộ code đã được viết cho đơn vị có thể thực thi.  
+1. Tương tác cá nhân và theo nhóm hơn là các quy trình và công cụ
+2. Phần mềm có thể làm việc hơn là tài liệu đầy đủ
+3. Sự hợp tác của khách hàng hơn là quá trình đàm phán hợp đồng
+4. Đáp ứng với thay đổi hơn là tuân thủ kế hoạch
 
-Kiểm thử đơn vị yêu cầu truy cập vào code đang được kiểm tra.  
+## So sánh Agile vs Waterfall
 
-Một phương pháp tiếp cận kiểm thử đơn vị được gọi là phát triển dựa trên kiểm thử.  
-Như tên gọi của nó, trước tiên viết các ca kiểm thử, sau đó xây dựng, kiểm thử và thay đổi code cho đến khi đơn vị vượt qua các kiểm thử.  
-Đây là một phương pháp lặp lại cho kiểm thử đơn vị.  
-
-> Unit testing là kiểu white box testing
-
----
-
-### **Mục đích**  
-- Để xác định rằng mỗi đơn vị phần mềm được thực hiện như thiết kế.  
-- Thử nghiệm đơn vị làm tăng sự tự tin trong việc thay đổi / bảo trì code.  
-- Nếu kiểm tra đơn vị tốt được viết và nếu chúng được chạy mỗi khi bất kỳ code nào được thay đổi,  
-  chúng ta sẽ có thể bắt kịp kịp thời mọi lỗi do thay đổi.  
-- Chi phí sửa chữa lỗi phát hiện trong khi kiểm tra đơn vị nhỏ hơn so với lỗi phát hiện ở mức cao hơn.  
-  So sánh chi phí (thời gian, công sức, sự hỏng hóc, mất thể diện) của một lỗi phát hiện trong quá trình kiểm thử chấp nhận hoặc khi phần mềm đang hoạt động.
-
----
-
-### **Áp Dụng**  
-Sau khi code xong feature **Upload Image** cho **Custom option Image** ngoài **Storefront**, team dev thực hiện viết các unit test với các case:
-
-- Tải lên các ảnh hợp lệ (.png, .jpg,...) thông báo thành công  
-- Tải lên các ảnh không hợp lệ (.txt, .pds,...) thông báo lỗi  
-- Các unit test đảm bảo các chức năng luôn được hoạt động đúng  
-- Unit test cần đảm bảo sau khi sửa code thì các chức năng cũng có thể hoạt động đúng  
+| Tiêu chí | Agile | Waterfall |
+|---------|-------|-----------|
+| Cách tiếp cận | Lặp lại & tăng dần | Tuyến tính |
+| Thiết kế | Chia mô-đun nhỏ | Không chia mô-đun |
+| Khách hàng | Tham gia xuyên suốt | Chỉ xem cuối |
+| Linh hoạt | Cao | Thấp |
+| Ước lượng thời gian | Khó với dự án lớn | Chính xác |
+| Sửa lỗi | Mọi lúc | Cuối mới sửa |
+| Tài liệu | Không ưu tiên | Ưu tiên hàng đầu |
+| Kiểm thử | Trong mỗi vòng lặp | Sau phát triển |
+| Giao sản phẩm | Từng phần | Tất cả sau triển khai |
+| Dev & Tester | Làm việc chung | Làm riêng |
+| Giao tiếp | Chặt chẽ | Thưa thớt |
 
 ---
 
-## Integration Test – Kiểm thử tích hợp  
+# Scrum
 
-### **Định nghĩa**  
-Là cấp độ kiểm thử phần mềm trong đó các đơn vị riêng lẻ được kết hợp và thử nghiệm dưới dạng một nhóm.  
-Một dự án phần mềm bao gồm nhiều module phần mềm, được code bởi nhiều người khác nhau.  
-Kiểm thử tích hợp tập trung vào kiểm tra truyền dữ liệu giữa các module  
-(tích hợp các hàm lại với nhau, tích hợp các màn hình lại với nhau theo từng module hay dựa theo chức năng.)
+SCRUM là phương pháp Agile quản lý nhiệm vụ trong nhóm nhỏ (7-9 thành viên).
+![](./media/JDNUr1VODihmZvWf-image-1703589800454.png)
+## 3 vai trò chính:
 
----
+- **Development Team:** Tự quản và tổ chức công việc
+- **Scrum Master:** Tổ chức Sprint, loại bỏ trở ngại
+- **Product Owner:** Tạo & ưu tiên backlog, giao chức năng
 
-### **Mục đích**  
-- Để lộ các lỗi trong sự tương tác giữa các đơn vị tích hợp.  
-- Để tìm ra lỗi trong quá trình tích hợp các thành phần, module lại với nhau.  
-- Các trình điều khiển thử nghiệm và các phần tử thử nghiệm được sử dụng để hỗ trợ trong Kiểm thử tích hợp.
+## Các thực hành Scrum:
+![](./media/PWYqRMC7lhPlI6O1-image-1703589813786.png)
+- **Sprint Planning:** Lên kế hoạch từ Product Backlog
+- **Sprint:** Vòng lặp phát triển 2–4 tuần
+- **Daily Meeting:** Họp ngắn hằng ngày (~15 phút)
+- **Review Meeting:** Trình bày tính năng hoàn thành
+- **Retrospective Meeting:** Rút kinh nghiệm cuối sprint
 
----
+## Quy trình Scrum:
 
-### **Các phương pháp tiếp cận**  
-- **Big bang:** Đây là giai đoạn mà tất cả các đơn vị được liên kết cùng nhau, tạo thành một hệ thống hoàn chỉnh.  
-  Khi kiểm thử hệ thống này được tiến hành, rất khó để cô lập bất kỳ lỗi nào được tìm thấy,  
-  vì không chú trọng vào việc xác minh các giao diện giữa các đơn vị cá nhân.  
-  Loại tích hợp này thường được coi là một lựa chọn tích hợp kém chất lượng.  
-  Nó mang lại rủi ro rằng các vấn đề có thể được phát hiện muộn trong dự án, nơi chúng trở nên đắt đỏ hơn để sửa chữa.
-
-- **Top Down:** Hệ thống được xây dựng theo từng giai đoạn, bắt đầu bằng các thành phần gọi các thành phần khác.  
-  Các thành phần gọi thành phần khác thường được đặt phía trên so với các thành phần được gọi.  
-  Kiểm thử tích hợp từ trên xuống cho phép người kiểm thử đánh giá các giao diện thành phần, bắt đầu từ những giao diện ở "đỉnh".
----
-
-![image](./media/EeCn79FdTuJpR2P8-image-1703565977553.png)
-
----
-- **Button Up:** Trong kiểm thử tích hợp Button Up, các module cấp thấp được tích hợp và kiểm tra trước tiên,  
-  tức là kiểm tra từ module phụ đến module chính.  
-  Tương tự như Stubs, trình điều khiển ở đây được sử dụng như một module tạm thời để kiểm thử tích hợp.
----
-
-![image](./media/S35kOthxnSGXO55x-image-1703566040195.png)
-
----
-- **Sandwich / Hybrid:** Là một cách tiếp cận để kiểm thử tích hợp,  
-  đó là sự kết hợp của các phương pháp Top Down và Bottom Up.
-> Cần lưu ý rằng việc kiểm thử ở cấp độ tích hợp hệ thống mang theo những yếu tố rủi ro bổ sung.  
-> Các yếu tố này có thể bao gồm:  
-> - ở mức kỹ thuật: vấn đề liên quan đến đa nền tảng  
-> - ở mức hoạt động: vấn đề liên quan đến quy trình kinh doanh  
-> - ở mức doanh nghiệp: rủi ro liên quan đến sự sở hữu của các vấn đề hồi quy có thể ảnh hưởng hệ thống khác.
-
----
-
-### **Áp Dụng**  
-Đối với feature **Update custom option image** cần phải làm các chức năng:
-
-- Cho phép buyer preview, chỉnh sửa, điều chỉnh kích thước image upload  
-- Bổ sung Button Add to Cart và Guide text vào trong pop up của button live preview  
-- Cho phép filter ảnh up lên theo dạng đen trắng  
-- Cho phép remove background của ảnh up lên  
-- Loại bỏ việc hiển thị full name của image khi upload  
-- Update thêm một số tính năng xử lý văn bản tại ô help text  
-
-**Các bước thực hiện kiểm thử tích hợp:**
-
-1. Mỗi chức năng sẽ được gán cho 1 dev để thực hiện code trên máy của mình  
-2. Team QE tạo test plan, test design, testcase và automation test cho feature  
-3. Sau khi unit test thành công, nhóm dev tích hợp code lại với nhau  
-4. Team QE test theo test case và run automation test để tìm lỗi  
-5. Dev và QE phối hợp xử lý lỗi  
-6. Lặp lại đến khi feature kiểm thử đầy đủ, hoạt động đúng yêu cầu  
-
----
-
-## System Testing – Kiểm thử mức hệ thống  
-
-### **Định nghĩa**  
-Là một mức độ kiểm thử phần mềm, nơi một phần mềm hoàn chỉnh và tích hợp được kiểm tra.  
-
-Điểm khác nhau then chốt giữa Integration Test và System Test là:  
-- System Test chú trọng các hành vi và lỗi trên toàn hệ thống  
-- Integration Test chú trọng sự giao tiếp giữa các đơn thể hoặc đối tượng khi chúng làm việc cùng nhau  
-
-> Kiểm thử hệ thống bao gồm kiểm thử chức năng và phi chức năng.
-
----
-
-### **Mục đích**  
-- Để đánh giá sự tuân thủ của hệ thống với các yêu cầu được chỉ định  
-- Giảm rủi ro do chọn test case không đại diện trong unit/integration  
-- Đưa ra đánh giá khách quan về hệ thống dựa trên tài liệu yêu cầu, không phải mã nguồn
-
----
-
-### **Áp Dụng**  
-Sau khi feature **Update custom option image** đã được kiểm thử tích hợp:  
-- Trước khi build lên môi trường Production và được User sử dụng → phải test lại toàn bộ hệ thống  
-- Giai đoạn này đảm bảo version mới không gây lỗi cho chức năng cũ  
-- Team QE thực hiện lại tất cả testcase trong release checklist để đảm bảo toàn vẹn hệ thống
-
----
-
-## Acceptance Testing - Kiểm thử chấp nhận  
-
-### **Định nghĩa**  
-Là một mức độ kiểm thử phần mềm trong đó một hệ thống được kiểm tra tính chấp nhận.  
-Được thực hiện bởi người dùng cuối để kiểm tra hệ thống được xây dựng có phù hợp yêu cầu kinh doanh không.  
-> Nó còn được gọi là thử nghiệm người dùng doanh nghiệp.
-
----
-
-### **Mục đích**  
-- Đánh giá sự tuân thủ của hệ thống với các yêu cầu kinh doanh  
-- Đánh giá hệ thống có được chấp nhận để phân phối hay không  
-- Không tập trung tìm lỗi mà xác nhận sự sẵn sàng của hệ thống triển khai
-
----
-
-### **Các loại kiểm thử chấp nhận**
-
-- **Alpha Testing:** thực hiện tại nơi phát triển phần mềm, độc lập với nhóm phát triển  
-- **Beta Testing:** thực hiện tại địa điểm khách hàng, gọi là kiểm thử thực địa
-
----
-
-### **Áp Dụng**  
-Sau khi feature **Update custom option image** được phát triển và kiểm thử đảm bảo:
-
-- Bàn giao cho PM/PO nghiệm thu lại feature  
-- PM kiểm tra hoạt động đúng chưa, đúng yêu cầu chưa, phù hợp với khách hàng chưa  
-- Nếu có lỗi, yêu cầu update/fix  
-- Nếu đạt → thông báo cho người dùng thực tế và nhận feedback để cải tiến
+1. Sprint lặp lại liên tục
+2. Product Backlog chứa yêu cầu
+3. User Story -> Sprint Backlog
+4. Team làm việc theo Sprint Backlog
+5. Daily check công việc
+6. Cuối Sprint: Bàn giao sản phẩm
