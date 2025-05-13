@@ -104,3 +104,80 @@ Git là một hệ thống kiểm soát giúp quản lý mã nguồn trong các 
 - `git fetch`: Tải các thay đổi từ remote về mà không áp dụng chúng vào nhánh hiện tại.
 
 ---
+### Git Workflow for QA Automation
+
+#### Typical Workflow
+
+1. **Clone repository**: `git clone <url>`.
+2. **Create feature branch**: `git checkout -b feature/add-login-tests`.
+3. **Write/edit test scripts**: Sửa hoặc thêm test scripts.
+4. **Stage and commit**:
+   - `git add .`
+   - `git commit -m "Add login test scripts"`.
+5. **Push to remote**: `git push origin feature/add-login-tests`.
+6. **Create Pull Request**: Tạo PR trên GitHub/GitLab để yêu cầu merge.
+7. **Resolve conflicts (if any)**: Kéo code từ main (`git pull origin main`), giải quyết conflict, đẩy lại.
+8. **Merge and delete branch**: Sau khi PR được phê duyệt, xóa nhánh.
+
+---
+### 5. Git Convention
+
+Dưới đây là các quy ước phổ biến mà QE automation test nên tuân theo:
+
+#### Branch Naming
+
+- Sử dụng tên nhánh rõ ràng, mô tả mục đích của nhánh.
+- Cấu trúc: `<type>/<short-description>`.
+- Các loại nhánh phổ biến:
+  - `feat/`: Thêm tính năng mới (ví dụ: `feat/add-login-tests`).
+  - `fix/`: Sửa lỗi (ví dụ: `fix/fix-login-error`).
+  - `chore/`: Cập nhật cấu hình, tài liệu (ví dụ: `chore/update-test-config`).
+- Quy tắc:
+  - Dùng dấu gạch ngang (`-`) thay vì dấu cách hoặc gạch dưới.
+  - Tên nhánh ngắn gọn, dưới 30 ký tự nếu có thể.
+  - Liên kết với ticket (nếu có): Ví dụ, `feature/TICKET-123-add-payment-tests`.
+
+#### Commit Messages
+
+- Viết thông điệp commit ngắn gọn, rõ ràng, mô tả chính xác thay đổi.
+- Cấu trúc: `<type>(<scope>): <description>`.
+  - **type**: Loại thay đổi (ví dụ: `feat`, `fix`, `chore`, `docs`, `test`).
+  - **scope**: Phần code bị ảnh hưởng (ví dụ: `login`, `payment`, `api`).
+  - **description**: Mô tả ngắn gọn (bắt đầu bằng động từ, viết hoa chữ cái đầu).
+- Ví dụ:
+  - `feat(login): Add test scripts for user authentication`
+  - `fix(payment): Resolve null pointer in payment API tests`
+  - `chore(config): Update test environment variables`
+- Quy tắc:
+  - Dùng tiếng Anh (hoặc ngôn ngữ chung của team).
+  - Giới hạn dòng đầu tiên dưới 50 ký tự.
+  - Nếu cần giải thích chi tiết, thêm mô tả ở các dòng sau (giới hạn 72 ký tự mỗi dòng).
+
+#### Pull Request (PR) Guidelines
+
+- **Tiêu đề PR**: Tóm tắt mục đích, ví dụ: "Add login test scripts for API".
+- **Mô tả PR**:
+  - Mô tả ngắn gọn thay đổi.
+  - Liên kết với ticket (nếu có): Ví dụ, "Closes TICKET-123".
+  - Liệt kê các thay đổi chính hoặc test cases liên quan.
+- **Checklist**:
+  - Đảm bảo code chạy tốt, tests pass.
+  - Thêm reviewer (developer hoặc QE khác).
+  - Xóa nhánh sau khi merge (nếu không cần thiết).
+
+#### General Rules
+
+- **Commit nhỏ và thường xuyên**: Mỗi commit chỉ nên chứa một thay đổi logic (ví dụ: thêm một test case, sửa một lỗi).
+- **Không commit file nhạy cảm**: Tránh commit file chứa thông tin bí mật (API keys, passwords). Dùng `.gitignore` để loại trừ.
+- **Kiểm tra trước khi push**: Chạy tests (`npm test`, `pytest`, v.v.) để đảm bảo code không bị lỗi.
+- **Giữ lịch sử sạch**: Sử dụng `git rebase` hoặc `git commit --amend` để sửa commit trước khi push (nếu chưa chia sẻ).
+
+#### Example Workflow with Convention
+
+1. Tạo nhánh: `git checkout -b feat/TICKET-123-add-login-tests`.
+2. Viết test scripts và commit:
+   - `git add .`
+   - `git commit -m "feat(login): Add test scripts for user authentication"`.
+3. Push nhánh: `git push origin feat/TICKET-123-add-login-tests`.
+4. Tạo PR với tiêu đề: "TICKET-123: Add login test scripts".
+5. Sau khi merge, xóa nhánh: `git push origin --delete feat/TICKET-123-add-login-tests`.
