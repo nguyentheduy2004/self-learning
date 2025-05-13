@@ -162,7 +162,7 @@ Agile là một phương pháp thúc đẩy sự lặp lại liên tục của q
 
 SCRUM là phương pháp Agile quản lý nhiệm vụ trong nhóm nhỏ (7-9 thành viên).
 ![](./media/JDNUr1VODihmZvWf-image-1703589800454.png)
-## 3 vai trò chính:
+## 🎯3 vai trò chính:
 
 - **Development Team:** Tự quản và tổ chức công việc
 - **Scrum Master:** Tổ chức Sprint, loại bỏ trở ngại
