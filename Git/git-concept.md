@@ -120,7 +120,7 @@ Git là một hệ thống kiểm soát giúp quản lý mã nguồn trong các 
 8. **Merge and delete branch**: Sau khi PR được phê duyệt, xóa nhánh.
 
 ---
-### 5. Git Convention
+### Git Convention
 
 Dưới đây là các quy ước phổ biến mà QE automation test nên tuân theo:
 
