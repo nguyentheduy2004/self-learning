@@ -1,5 +1,5 @@
 
-# Key Takeaways: JavaScript Operators, Data Types, and Type Conversion
+# JavaScript Operators, Data Types, and Type Conversion
 
 ### A. **Arithmetic Operators**
 Các toán tử số học được sử dụng để thực hiện các phép toán trên số (có thể là số nguyên hoặc biến).
