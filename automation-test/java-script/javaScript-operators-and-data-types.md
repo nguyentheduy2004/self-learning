@@ -76,7 +76,7 @@ Các toán tử logic được sử dụng để kết hợp hoặc phủ địn
 | Operator | Description              | Example (`let a = true, b = false;`) | Result  |
 |----------|--------------------------|--------------------------------------|---------|
 | `&&`     | Logical AND (returns true if both are true)  | `a && b`                              | `false` |
-| `||`     | Logical OR (returns true if at least one is true) | `a || b`                             | `true`  |
+| `\|\|`      | Logical OR (returns true if at least one is true) | `a \|\| b`                             | `true`  |
 | `!`      | Logical NOT (negates the boolean) | `!a`                                 | `false` |
 
 - **`&&` (AND):** Trả về `true` nếu *both* toán hạng đều `true`.
