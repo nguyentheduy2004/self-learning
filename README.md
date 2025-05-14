@@ -1,10 +1,14 @@
 # Self Learning Documentation
+
+Welcome to the **Self Learning** project!!! 
+
 ## Table of Contents
 
-### Automation TestingTesting
-#### Git
+###  **1. Automation Testing**
+#### **A. Git**
 1. [Git](./automation-test/git/git-concept.md)
-#### Java Script
+
+#### **B. JavaScript**
 1. [Variables, Comments, and Built-in Functions](./automation-test/java-script/01-variables-comments-built-in-functions.md)
 2. [JavaScript Operators and Data Types](./automation-test/java-script/02-javaScript-operators-and-data-types.md)
 3. [Conditional Statements and Ternary Operator](./automation-test/java-script/03-conditional-statements-and-ternary-operators.md)
@@ -13,7 +17,9 @@
 6. [Strings](./automation-test/java-script/06-string.md)
 7. [Numbers](./automation-test/java-script/07-number.md)
 
-### Manual Testing
+---
+
+### **2. Manual Testing**
 
 1. [Product Life Cycle](./manual-test/01-product-life-cycle.md)
 2. [Software Development Life Cycle](./manual-test/02-software-development-life-cycle.md)
@@ -21,4 +27,8 @@
 4. [Testing Phases](./manual-test/04-testing-phases.md)
 5. [Test Types](./manual-test/05-test-types.md)
 6. [Testing Techniques](./manual-test/06-testing-techniques.md)
+
+---
+
+
 
