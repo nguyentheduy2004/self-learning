@@ -1,5 +1,5 @@
 
-# 📘 TỔNG QUAN VỀ API VÀ API TESTING
+# TỔNG QUAN VỀ API VÀ API TESTING
 
 ---
 
@@ -48,8 +48,10 @@ Client ----(HTTP Request)----> API Gateway/Server---(HTTP Response)----->Client
 ```
 
 **Cấu trúc HTTP Request:**
+- **Base URL:** Địa chỉ chính của máy chủ (gồm giao thức, tên miền/IP). `https:` 
+- **Endpoint (URL):** Đường dẫn đến tài nguyên cụ thể. `/products/123`
+- **Parameters:** Thêm sau dấu ? dưới dạng key=value, ngăn cách bằng &. `/products?category=phone&page=2`
 
-- **Endpoint (URL):** `/products/123`
 - **HTTP Method:**
   - `GET`: Lấy dữ liệu.
   - `POST`: Tạo mới.
