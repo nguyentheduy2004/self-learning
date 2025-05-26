@@ -43,7 +43,8 @@
 **Mô hình Client-Server:**
 
 ```text
-Client ----(HTTP Request)----> API Gateway/Server<---(HTTP Response)-----
+Client ----(HTTP Request)----> API Gateway/Server---(HTTP Response)----->Client
+
 ```
 
 **Cấu trúc HTTP Request:**
