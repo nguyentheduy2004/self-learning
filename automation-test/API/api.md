@@ -212,7 +212,6 @@ Client ----(HTTP Request)----> API Gateway/Server---(HTTP Response)----->Client
 - [9] Test dữ liệu biên (max, min, null...).
 
 ---
-
 ## Công cụ hỗ trợ kiểm thử API
 
 | Công cụ | Mục đích |
