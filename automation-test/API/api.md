@@ -46,11 +46,14 @@
 Client ----(HTTP Request)----> API Gateway/Server---(HTTP Response)----->Client
 
 ```
-
++ Client: Ứng dụng, trình duyệt, mobile app hoặc dịch vụ khác gửi yêu cầu đến API để lấy dữ liệu hoặc thao tác với tài nguyên.
++ API Gateway/Server: Nhận yêu cầu, xử lý (bao gồm xác thực, xử lý nghiệp vụ, truy vấn database...), và trả kết quả về cho client.
+---
 **Cấu trúc HTTP Request:**
 - **Base URL:** Địa chỉ chính của máy chủ (gồm giao thức, tên miền/IP). `https:` 
 - **Endpoint (URL):** Đường dẫn đến tài nguyên cụ thể. `/products/123`
 - **Parameters:** Thêm sau dấu ? dưới dạng key=value, ngăn cách bằng &. `/products?category=phone&page=2`
+- **Base URL** + **Endpoint** + **Parameters**: Xác định tài nguyên mà client muốn thao tác.
 
 - **HTTP Method:**
   - `GET`: Lấy dữ liệu.
@@ -60,9 +63,9 @@ Client ----(HTTP Request)----> API Gateway/Server---(HTTP Response)----->Client
   - `DELETE`: Xóa.
 
 - **Headers:** Metadata của request
-  - `Content-Type: application/json`
-  - `Authorization: Bearer <token>`
-  - `Accept: application/json`
+  - `Content-Type: application/json`Định dạng dữ liệu gửi đi.
+  - `Authorization: Bearer <token>`Xác thực người dùng, đảm bảo chỉ người được phép mới thao tác.
+  - `Accept: application/json`Định dạng dữ liệu client muốn nhận.
 
 - **Body:** Dữ liệu gửi lên, thường dạng JSON:
   ```json
@@ -74,16 +77,16 @@ Client ----(HTTP Request)----> API Gateway/Server---(HTTP Response)----->Client
 
 **HTTP Response:**
 
-- **Status Code:**
+- **Status Code:** Mã trạng thái kết quả request
   - 2xx (Success): `200 OK`, `201 Created`
   - 3xx (Redirection): `301 Moved Permanently`
   - 4xx (Client Error):`400 Bad Request`, `401 Unauthorized`, `404 Not Found`
   - 5xx (Server Error):`500 Internal Server Error`
 
-- **Headers:**
+- **Headers:** Thông tin metadata đi kèm response
   - `Content-Type`, `Content-Length`
 
-- **Body:**
+- **Body:** Dữ liệu trả về, có thể là kết quả hoặc thông báo lỗi
   ```json
   {
     "id": 123,
@@ -222,4 +225,53 @@ Client ----(HTTP Request)----> API Gateway/Server---(HTTP Response)----->Client
 | **RestAssured (Java)** | Tự động hóa API test. |
 
 ---
+## Phần V: HTTP vs HTTPS
+### 1. HTTP là gì?
 
+- **HTTP** (HyperText Transfer Protocol) là giao thức truyền tải siêu văn bản, dùng để trao đổi dữ liệu giữa client (trình duyệt, app) và server qua mạng Internet.
+- HTTP hoạt động ở tầng ứng dụng trong mô hình OSI.
+- Dữ liệu được gửi dưới dạng **plaintext** (dữ liệu không được mã hóa).
+- Ví dụ URL: `http://`
+
+#### Đặc điểm HTTP:
+- Dữ liệu truyền qua mạng dễ bị nghe lén (sniffing), sửa đổi hoặc giả mạo.
+- Không có cơ chế bảo mật tích hợp.
+- Thường dùng cho các trang web hoặc dịch vụ không quan trọng về bảo mật.
+
+---
+
+### 2. HTTPS là gì?
+
+- **HTTPS** (HyperText Transfer Protocol Secure) là phiên bản bảo mật của HTTP, sử dụng **SSL/TLS** để mã hóa dữ liệu khi truyền tải.
+- Dữ liệu giữa client và server được mã hóa, đảm bảo tính riêng tư và toàn vẹn.
+- Ví dụ URL: `https://`
+
+#### Đặc điểm HTTPS:
+- Dữ liệu được mã hóa giúp chống nghe lén và tấn công trung gian (MITM).
+- Server có chứng chỉ số (SSL Certificate) được cấp bởi CA uy tín để xác thực danh tính.
+- Tăng độ tin cậy cho người dùng, thường thấy biểu tượng khóa trên trình duyệt.
+- Bảo vệ thông tin nhạy cảm như mật khẩu, token, dữ liệu cá nhân.
+
+---
+
+### 3. So sánh HTTP và HTTPS
+
+| Tiêu chí            | HTTP                          | HTTPS                          |
+|---------------------|-------------------------------|--------------------------------|
+| **Bảo mật**          | Không mã hóa, dễ bị đánh cắp dữ liệu | Mã hóa dữ liệu, bảo vệ khỏi nghe lén và giả mạo |
+| **Cổng mặc định**    | 80                            | 443                            |
+| **Tốc độ**           | Nhanh hơn vì không mã hóa      | Chậm hơn 1 chút do mã hóa giải mã |
+| **Chứng chỉ**        | Không cần                     | Cần chứng chỉ SSL/TLS     |
+| **Xác thực server**  | Không                        | Có, qua chứng chỉ số           |
+| **Đáng tin cậy**     | Thấp                         | Cao, người dùng yên tâm hơn    |
+| **SEO & UX**         | Không được ưu tiên             | Được ưu tiên trên Google và trình duyệt hiện đại |
+
+---
+### 4. Tại sao nên dùng HTTPS cho API?
+
+- **Bảo vệ dữ liệu nhạy cảm:** Token, mật khẩu, thông tin khách hàng, thanh toán…
+- **Ngăn chặn tấn công MITM:** Kẻ gian không thể đọc hoặc sửa dữ liệu đang truyền.
+- **Xác thực server:** Đảm bảo client đang kết nối đúng máy chủ API thật, tránh giả mạo.
+- **Tuân thủ chuẩn bảo mật:** Nhiều chuẩn bảo mật yêu cầu HTTPS.
+- **Cải thiện độ tin cậy và uy tín:** Người dùng tin tưởng và thoải mái sử dụng dịch vụ.
+---
