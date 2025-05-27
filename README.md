@@ -8,7 +8,7 @@ Welcome to the **Self Learning** project!!!
 #### **A. Git**
 1. [Git](./automation-test/git/git-concept.md)
 #### **B. API**
-1. [API](./automation-test/API/api.md)
+1. [API & API Testing](./automation-test/API/api.md)
 #### **C. JavaScript**
 1. [Variables, Comments, and Built-in Functions](./automation-test/java-script/01-variables-comments-built-in-functions.md)
 2. [JavaScript Operators and Data Types](./automation-test/java-script/02-javaScript-operators-and-data-types.md)
