@@ -1,5 +1,5 @@
 
-# Tóm tắt kiến thức về XPath
+# Tìm hiểu XPath
 
 ## 1. XPath là gì?
 XPath là viết tắt của **XML Path** — một ngôn ngữ dùng để định vị và tìm kiếm các phần tử trên tài liệu XML hoặc HTML.  
