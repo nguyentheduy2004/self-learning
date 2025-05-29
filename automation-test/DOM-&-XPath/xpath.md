@@ -33,7 +33,29 @@ Nó cho phép bạn tìm kiếm phần tử trên trang web dựa vào cấu tr�
 - `.`: Đại diện cho node hiện tại.
 - `..`: Đại diện cho node cha.
 ---
+#### Các Hàm XPath Thường Dùng `[method]`
 
+| Hàm XPath         | Mô tả chức năng                          | Ví dụ sử dụng                            | Giải thích |
+|-------------------|-------------------------------------------|------------------------------------------|------------|
+| `text()`          | Lấy nội dung văn bản của node             | `//p[text()='Xin chào']`                 | Chọn thẻ `<p>` có nội dung là "Xin chào" |
+| `contains()`      | Kiểm tra node có chứa chuỗi con          | `//a[contains(@href, 'google')]`         | Chọn thẻ `<a>` có `href` chứa "google" |
+| `starts-with()`   | Kiểm tra node bắt đầu bằng chuỗi         | `//div[starts-with(@id, 'user_')]`       | Chọn `<div>` có id bắt đầu bằng `user_` |
+| `ends-with()`     | Kiểm tra node kết thúc bằng chuỗi (XPath 2.0+) | `//div[ends-with(@class, '_item')]` | Chọn class kết thúc bằng `_item` |
+| `position()`      | Lấy vị trí của node trong tập kết quả    | `//li[position()=1]`                     | Chọn phần tử `<li>` đầu tiên |
+| `last()`          | Chọn phần tử cuối cùng                   | `//tr[last()]`                           | Lấy dòng cuối cùng của bảng |
+| `not()`           | Điều kiện phủ định                       | `//input[not(@type='hidden')]`           | Chọn `<input>` không có type là hidden |
+| `name()`          | Trả về tên của node                      | `//*[name()='input']`                    | Chọn tất cả node có tên là `input` |
+| `count()`         | Đếm số lượng node                        | `count(//div)`                           | Trả về số lượng thẻ `<div>` |
+| `string-length()` | Độ dài chuỗi                             | `//*[string-length(text()) > 10]`        | Chọn node có nội dung dài hơn 10 ký tự |
+| `normalize-space()` | Xóa khoảng trắng đầu/cuối và chuẩn hóa | `//p[normalize-space()='Hello']`         | So sánh chuỗi sau khi loại bỏ khoảng trắng thừa |
+| `substring()`     | Cắt chuỗi con                            | `substring('OpenAI', 1, 4)` → `"Open"`   | Trích xuất chuỗi con từ chuỗi |
+| `substring-before()` | Cắt chuỗi trước ký tự                 | `substring-before('a@b.com', '@')` → `"a"` | Lấy phần trước ký tự `@` |
+| `substring-after()`  | Cắt chuỗi sau ký tự                   | `substring-after('a@b.com', '@')` → `"b.com"` | Lấy phần sau ký tự `@` |
+| `translate()`     | Thay thế ký tự                           | `translate('XPath', 'XP', 'xp')` → `"xpath"` | Chuyển chữ hoa thành chữ thường |
+| `boolean()`       | Ép kiểu boolean                          | `boolean(//div[@class='error'])`         | Trả về `true` nếu có thẻ `<div class="error">` |
+| `true()` / `false()` | Giá trị boolean                       | `//*[@checked='true']`                   | Kiểm tra boolean đúng/sai |
+
+---
 ## 4. Các loại XPath
 
 | Loại XPath  | Cách bắt đầu | Đặc điểm | Ví dụ |
@@ -41,6 +63,11 @@ Nó cho phép bạn tìm kiếm phần tử trên trang web dựa vào cấu tr�
 | Tuyệt đối   | `/`           | Tìm đường dẫn chính xác từ gốc đến phần tử |/html/body/div/div/div/h2|
 | Tương đối   | `//`          | Tìm kiếm tương đối, tìm mọi node phù hợp trong DOM |//h2[@class='header']|
 
+Nên dùng XPath tương đối (//) trong hầu hết các trường hợp vì:
+- Không bị phụ thuộc vào toàn bộ cây DOM.
+- Dễ bảo trì khi cấu trúc trang web thay đổi.
+- Dễ kết hợp với các hàm như contains(), text(), starts-with(),...
+- Không nên dùng XPath tuyệt đối (/) vì dễ bị lỗi khi giao diện của web thay đổi
 ---
 
 ## 5. Ví dụ XPath cơ bản
@@ -80,16 +107,18 @@ Ví dụ XPath:
 
 Dùng để tìm phần tử dựa vào **quan hệ vị trí trong DOM** (cha, con, anh em...).
 
-| Phương thức (Axis)      | Ý nghĩa | Ví dụ XPath | Giải thích |
-|-------------------------|--------|-------------|------------|
-| `following`             | Các phần tử theo sau | `//*[@type="text"]//following::input[1]` | Tìm input đầu tiên sau thẻ có type="text" |
-| `ancestor`              | Phần tử tổ tiên | `//*[@type="password"]//ancestor::div` | Tìm các thẻ div là tổ tiên |
-| `child`                 | Phần tử con trực tiếp | `//*[@id='java_technology']//child::li` | Tìm các li là con của thẻ có id |
-| `preceding`             | Các phần tử trước | `//*[@type="submit"]//preceding::input` | Tìm tất cả input đứng trước |
-| `following-sibling`     | Anh/chị em cùng cấp sau | `//*[@type="submit"]//following-sibling::input` | Tìm input cùng cấp sau |
-| `parent`                | Phần tử cha | `//*[@id="rt-feature"]//parent::div[1]` | Tìm div là cha |
-| `self`                  | Chính nó | `descendant-or-self::node()` | Kết hợp tìm chính nó và hậu duệ |
-| `descendant`            | Hậu duệ | `//*[@id='rt-feature']//descendant::a[1]` | Tìm thẻ a đầu tiên là hậu duệ |
+| Phương thức (Axis)      | Ý nghĩa                  | Ví dụ XPath                                      | Giải thích                                                |
+|-------------------------|--------------------------|-------------------------------------------------|-----------------------------------------------------------|
+| `following`             | Các phần tử phía sau, trừ phần tử con của node đó| `//*[@type="text"]//following::input[1]`        | Tìm input đầu tiên sau thẻ có `type="text"`               |
+| `ancestor`              | Phần tử tổ tiên          | `//*[@type="password"]//ancestor::div`           | Tìm các thẻ div là tổ tiên của phần tử có type password   |
+| `child`                 | Phần tử con trực tiếp    | `//*[@id='java_technology']//child::li`          | Tìm các thẻ `<li>` là con trực tiếp của thẻ có id        |
+| `preceding`             | Các phần tử trước trừ các node trực hệ của phần tử đó| `//*[@type="submit"]//preceding::input`          | Tìm tất cả thẻ `<input>` đứng trước phần tử có type submit |
+| `following-sibling`     | Anh/chị em cùng cấp sau  | `//*[@type="submit"]//following-sibling::input` | Tìm các thẻ `<input>` cùng cấp nằm sau phần tử có type submit |
+| `preceding-sibling`     | Anh/chị em cùng cấp trước| `//li[@id='target']/preceding-sibling::li`       | Tìm các thẻ `<li>` cùng cấp đứng trước thẻ `<li id="target">` |
+| `parent`                | Phần tử cha              | `//*[@id="rt-feature"]//parent::div[1]`          | Tìm thẻ `<div>` là cha trực tiếp của phần tử có id        |
+| `self`                  | Chính nó                 | `descendant-or-self::node()`                      | Kết hợp tìm chính nó và tất cả các hậu duệ                 |
+| `descendant`            | Hậu duệ                  | `//*[@id='rt-feature']//descendant::a[1]`         | Tìm thẻ `<a>` đầu tiên là hậu duệ của phần tử có id        |
+
 
 ---
 
