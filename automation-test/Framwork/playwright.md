@@ -69,7 +69,7 @@ Dưới đây là **so sánh chi tiết giữa Playwright và Selenium** — hai
 | **Tính tổ chức**      | Có **cấu trúc rõ ràng**, quy định cách viết mã, tổ chức dự án | Không có cấu trúc cố định, dùng linh hoạt                    |
 | **Tính mở rộng**      | Dễ dàng **mở rộng, tái sử dụng**, tích hợp CI/CD           | Thường giới hạn trong khả năng đã có                         |
 | **Thành phần tích hợp** | Bao gồm **thư viện, công cụ hỗ trợ, định dạng test, cấu hình...** | Thường chỉ có một **chức năng chính** duy nhất               |
-| **Ví dụ**             | Playwright, Selenium, Cypress, JUnit, TestNG            | Postman (test API), Chrome DevTools, Firebug, JMeter (load test) |
+| **Ví dụ**             | Playwright, Selenium, Cypress, JUnit, TestNG            | Postman (test API), Chrome DevTools, JMeter (load test) |
 ---
 ## 4. Getting started with Playwright: Tương tác với phần tử, test hooks
 
@@ -92,12 +92,6 @@ await page.fill('input[name="q"]', 'Playwright');
 ```js
 const text = await page.textContent('h1');
 ```
-
-### Test hooks
-
-- `beforeAll`, `afterAll`: chạy một lần trước/sau toàn bộ test.
-- `beforeEach`, `afterEach`: chạy trước/sau từng test.
-
 **Ví dụ**:
 
 ```js
