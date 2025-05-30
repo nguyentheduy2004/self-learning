@@ -113,7 +113,7 @@ Nút gọi là **cháu** (descendant) nếu nằm ở cấp dưới trong cây s
 
 ---
 
-### 4. Quan hệ anh chị em trước - sau (Previous Sibling - Next Sibling)
+### 4. Quan hệ anh chị em trước - sau (Preceding-sibling & Following-sibling)
 
 Với các nút anh chị em, có thể xác định nút đứng trước (`previousSibling`) hoặc đứng sau (`nextSibling`).
 
@@ -137,8 +137,44 @@ Mọi nút khác đều là **con** (trực tiếp hoặc gián tiếp) của n�
 
 ---
 
-### 6. Quan hệ thuộc tính - phần tử (Attribute - Element)
-
-Thuộc tính (Attribute) là một dạng nút gắn vào Element (phần tử), cung cấp thông tin bổ sung (ví dụ: `id`, `class`).
-
-> **Lưu ý:** Thuộc tính không được xem là con trong cây DOM theo chuẩn hiện tại, nhưng vẫn liên kết với Element.
+### 6.Preceding & Following
+#### 1. Following
++ Chọn tất cả các phần tử nằm sau phần tử hiện tại trong cây DOM, theo thứ tự xuất hiện trong tài liệu.
++ Bao gồm tất cả các phần tử nằm sau phần tử hiện tại, không phân biệt cấp bậc hay vị trí.
++ Không bao gồm:
+  + Node hiện tại
+  + Con cháu của node hiện tại
+```html
+<div>
+  <p id="p1">Paragraph 1</p>       <!-- Phần tử hiện tại -->
+  <span>Span 1</span>              <!-- following -->
+  <p>Paragraph 2</p>               <!-- following -->
+  <div>
+    <p>Paragraph 3</p>             <!-- following (con cháu bên trong div) -->
+  </div>
+</div>
+```
+```xpath
+//p[@id='p1']/following::p 
+```
+Kết quả: chọn 2 thẻ có nội dung "Paragraph 2" và "Paragraph 3".
+#### 2. Preceding
++ Chọn tất cả các phần tử nằm trước phần tử hiện tại trong cây DOM, theo thứ tự xuất hiện trong tài liệu.
++ Bao gồm tất cả các phần tử nằm trước phần tử hiện tại, không phân biệt cấp bậc.
++ Không bao gồm:
+  + Node hiện tại
+  + Các ancestor của node hiện tại
+```html
+<div>
+  <p>Paragraph -1</p>             <!-- preceding -->
+  <p>Paragraph 0</p>              <!-- preceding -->
+  <div>
+    <p id="p2">Paragraph 1</p>    <!-- Phần tử hiện tại -->
+  </div>
+  <span>Span 1</span>             <!-- following -->
+</div>
+```
+```xpath
+//p[@id='p2']/preceding::p 
+```
+Kết quả: chọn 2 thẻ có nội dung "Paragraph 0" và "Paragraph -1".

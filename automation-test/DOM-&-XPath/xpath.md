@@ -14,6 +14,16 @@ Nó cho phép bạn tìm kiếm phần tử trên trang web dựa vào cấu tr�
 4. Bấm `Ctrl + F`.
 5. Nhập XPath vào ô tìm kiếm — Chrome sẽ highlight phần tử tương ứng nếu có.
 
+### Cấu tạo của Elements
+Một phần tử (Element) trong DOM được cấu tạo bởi các thành phần sau:
++ Tag: 
+  + Start tag (thẻ mở): Ví dụ `<div>, <p>, <input>`
+  + End tag (thẻ đóng): Ví dụ `</div>, </p>`
++ Attributes
+  + Cú pháp: attribute="value"
+  + Các thuộc tính chứa thông tin, cấu hình cho phần tử, ví dụ: `id="header ,class="main-title", type="text"`
++ Content
+  + Có thể là text hoặc các phần tử con lồng bên trong.
 ---
 
 ## 3. Cú pháp XPath
