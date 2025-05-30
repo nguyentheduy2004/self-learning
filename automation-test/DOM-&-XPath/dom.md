@@ -141,7 +141,9 @@ Mọi nút khác đều là **con** (trực tiếp hoặc gián tiếp) của n�
 #### 1. Following
 + Chọn tất cả các phần tử nằm sau phần tử hiện tại trong cây DOM, theo thứ tự xuất hiện trong tài liệu.
 + Bao gồm tất cả các phần tử nằm sau phần tử hiện tại, không phân biệt cấp bậc hay vị trí.
-+ Chọn cả anh/chị em, con cháu, chú bác,... miễn là xuất hiện sau phần tử đó theo thứ tự DOM.
++ Không bao gồm:
+  + Node hiện tại
+  + Con cháu của node hiện tại
 ```html
 <div>
   <p id="p1">Paragraph 1</p>       <!-- Phần tử hiện tại -->
@@ -159,7 +161,9 @@ Kết quả: chọn 2 thẻ có nội dung "Paragraph 2" và "Paragraph 3".
 #### 2. Preceding
 + Chọn tất cả các phần tử nằm trước phần tử hiện tại trong cây DOM, theo thứ tự xuất hiện trong tài liệu.
 + Bao gồm tất cả các phần tử nằm trước phần tử hiện tại, không phân biệt cấp bậc.
-+ Có thể là anh/chị em, cha mẹ, chú bác,... miễn là xuất hiện trước phần tử đó theo thứ tự DOM.
++ Không bao gồm:
+  + Node hiện tại
+  + Các ancestor của node hiện tại
 ```html
 <div>
   <p>Paragraph -1</p>             <!-- preceding -->
