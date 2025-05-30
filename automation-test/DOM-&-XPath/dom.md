@@ -137,7 +137,7 @@ Mọi nút khác đều là **con** (trực tiếp hoặc gián tiếp) của n�
 
 ---
 
-### 6.Quan hệ anh chị em trước - sau (Preceding & Following)
+### 6.Preceding & Following
 #### 1. Following
 + Chọn tất cả các phần tử nằm sau phần tử hiện tại trong cây DOM, theo thứ tự xuất hiện trong tài liệu.
 + Bao gồm tất cả các phần tử nằm sau phần tử hiện tại, không phân biệt cấp bậc hay vị trí.
