@@ -71,36 +71,209 @@ Dưới đây là **so sánh chi tiết giữa Playwright và Selenium** — hai
 | **Thành phần tích hợp** | Bao gồm **thư viện, công cụ hỗ trợ, định dạng test, cấu hình...** | Thường chỉ có một **chức năng chính** duy nhất               |
 | **Ví dụ**             | Playwright, Selenium, Cypress, JUnit, TestNG            | Postman (test API), Chrome DevTools, JMeter (load test) |
 ---
-## 4. Getting started with Playwright: Tương tác với phần tử, test hooks
-
-### Tương tác với phần tử
-
-- **Click**:
-
+## 4. Getting started with Playwright: 
+#### A. Input 
+- **Fill**: điền thẳng một đoạn text vào ô input 
 ```js
-await page.click('text=More information');
+// Text input
+await page.getByRole('textbox').fill('Peter');
+
+// Date input
+await page.getByLabel('Birth date').fill('2020-02-02');
+
+// Time input
+await page.getByLabel('Appointment time').fill('13:15');
+
+// Local datetime input
+await page.getByLabel('Local time').fill('2020-03-02T05:15');
 ```
-
-- **Nhập liệu**:
-
+---
+#### B. Checkboxes and radio buttons 
+- **Kiểm tra checkbox (check)**:
 ```js
-await page.fill('input[name="q"]', 'Playwright');
+await page.check('#checkbox-selector');
+await page.check('#radio-selector');
 ```
-
-- **Lấy text**:
-
+- **Bỏ chọn checkbox (uncheck)**:
 ```js
-const text = await page.textContent('h1');
+await page.uncheck('#checkbox-selector');
 ```
-**Ví dụ**:
-
+- **Kiểm tra trạng thái**:
 ```js
-test.beforeEach(async ({ page }) => {
-  await page.goto('https://example.com');
+const isChecked = await page.isChecked('#checkbox-selector');
+console.log(isChecked); // true hoặc false
+const isSelected = await page.isChecked('#radio-selector');
+console.log(isSelected); // true hoặc false
+```
+---
+#### C. Mouse click
+- **click**:
+```js
+await page.getByRole('button').click();
+```
+- **Double click**:
+```js
+await page.getByText('Item').dblclick();
+```
+- **Right click**:
+```js
+await page.getByText('Item').click({ button: 'right' });
+```
+- **Shift + Click**:
+```js
+await page.getByText('Item').click({ modifiers: ['Shift'] });
+```
+- **Ctrl + Click**:
+```js
+await page.getByText('Item').click({ modifiers: ['ControlOrMeta'] });
+```
+- **Click the top left corner**:
+```js
+await page.getByText('Item').click({ position: { x: 0, y: 0 } });
+```
+---
+#### D. Drag and Drop
+- **dragTo()**:Playwright sẽ tự động:
+    + Hover phần tử kéo,
+    + Nhấn giữ chuột trái,
+    + Di chuyển chuột đến phần tử thả,
+    + Thả chuột.
+```js
+await page.locator('#item-to-be-dragged').dragTo(page.locator('#item-to-drop-at'));
+```
+- **Cách thủ công**:
+```js
+// Di chuột tới phần tử nguồn
+await page.locator('#item-to-be-dragged').hover();
+// Nhấn giữ chuột
+await page.mouse.down();
+// Di chuột tới phần tử đích
+await page.locator('#item-to-drop-at').hover();
+// Thả chuột
+await page.mouse.up();
+```
+---
+#### E. Upload files
+- **Upload file bằng cách set input files trực tiếp (setInputFiles())**:
+```js
+const path = require('path');
+// Upload 1 file
+await page.getByLabel('Upload file').setInputFiles(path.join(__dirname, 'myfile.pdf'));
+// Upload nhiều file
+await page.getByLabel('Upload files').setInputFiles([
+  path.join(__dirname, 'file1.txt'),
+  path.join(__dirname, 'file2.txt'),
+]);
+// Upload thư mục (nếu input hỗ trợ)
+await page.getByLabel('Upload directory').setInputFiles(path.join(__dirname, 'mydir'));
+// Xóa file đã chọn
+await page.getByLabel('Upload file').setInputFiles([]);
+```
+- **Upload file từ buffer trong bộ nhớ (không cần file vật lý)**:
+```js
+await page.getByLabel('Upload file').setInputFiles({
+  name: 'file.txt',
+  mimeType: 'text/plain',
+  buffer: Buffer.from('this is test'),
 });
 ```
-
+- **Upload file khi input file được tạo động (file chooser popup)**:
+  + Đợi sự kiện filechooser
+  + Mở popup chọn file
+  + Sau đó set file cho file chooser
+```js
+const fileChooserPromise = page.waitForEvent('filechooser');
+await page.getByLabel('Upload file').click();  // Mở dialog chọn file
+const fileChooser = await fileChooserPromise;
+await fileChooser.setFiles(path.join(__dirname, 'myfile.pdf'));
+```
 ---
+## 5. Assertions
+Lời khuyên sử dụng
+- Luôn ưu tiên dùng auto-retrying assertions khi kiểm tra trạng thái UI hoặc page.
+- Khi cần kiểm tra giá trị hoặc logic thuần (không phụ thuộc trạng thái UI), dùng non-retrying assertion.
+- Nếu cần retry với logic phức tạp, có thể dùng thêm:
+  + expect.poll() — poll giá trị cho đến khi thỏa điều kiện,
+  + expect.toPass() — để retry custom assertion.
+
+
+#### A. Auto-retrying assertions
+- Những lệnh assert này sẽ tự động lặp lại cho đến khi:
+  + Assertion thành công, hoặc
+  + Hết timeout (mặc định là 5 giây, có thể tùy chỉnh).
+- Điều này rất hữu ích với UI test vì trang web thường load dữ liệu bất đồng bộ, trạng thái element có thể thay đổi sau vài giây.
+- Luôn phải dùng await vì là async.
+Lợi ích:
+  + Giảm tình trạng test flakiness (thỉnh thoảng fail do đợi không đủ lâu).
+  + Không cần tự viết vòng lặp chờ, Playwright xử lý giúp.
+
+| **Assertion**                | **Mô tả**                                      | **Ví dụ (JavaScript/TypeScript)**                              |
+|-----------------------------|-----------------------------------------------|-----------------------------------------------------------------|
+| `toBeAttached()`            | Phần tử có trong DOM                          | `await expect(locator).toBeAttached();`                         |
+| `toBeChecked()`             | Checkbox hoặc radio button được check         | `await expect(locator).toBeChecked();`                          |
+| `toBeDisabled()`            | Phần tử bị disable                            | `await expect(locator).toBeDisabled();`                         |
+| `toBeEditable()`            | Phần tử có thể chỉnh sửa được (input)         | `await expect(locator).toBeEditable();`                         |
+| `toBeEmpty()`               | Container không có phần tử con                | `await expect(locator).toBeEmpty();`                            |
+| `toBeEnabled()`             | Phần tử được enable                           | `await expect(locator).toBeEnabled();`                          |
+| `toBeFocused()`             | Phần tử đang được focus                       | `await expect(locator).toBeFocused();`                          |
+| `toBeHidden()`              | Phần tử không hiển thị (ẩn)                   | `await expect(locator).toBeHidden();`                           |
+| `toBeInViewport()`          | Phần tử trong vùng nhìn thấy (viewport)       | `await expect(locator).toBeInViewport();`                       |
+| `toBeVisible()`             | Phần tử hiển thị trên page                    | `await expect(locator).toBeVisible();`                          |
+| `toContainText()`           | Phần tử chứa đoạn text                        | `await expect(locator).toContainText('Welcome');`               |
+| `toHaveAttribute()`         | Phần tử có attribute xác định                 | `await expect(locator).toHaveAttribute('href', '/home');`       |
+| `toHaveClass()`             | Phần tử có class xác định                     | `await expect(locator).toHaveClass(/active/);`                  |
+| `toHaveCount()`             | List có số phần tử đúng                       | `await expect(locator).toHaveCount(5);`                         |
+| `toHaveCSS()`               | Phần tử có style CSS xác định                 | `await expect(locator).toHaveCSS('display', 'block');`          |
+| `toHaveId()`                | Phần tử có id xác định                        | `await expect(locator).toHaveId('submit-button');`              |
+| `toHaveJSProperty()`        | Phần tử có thuộc tính JS                      | `await expect(locator).toHaveJSProperty('value', '123');`       |
+| `toHaveRole()`              | Phần tử có role ARIA                          | `await expect(locator).toHaveRole('button');`                   |
+| `toHaveScreenshot()`        | Phần tử khớp ảnh chụp màn hình                | `await expect(locator).toHaveScreenshot('button.png');`         |
+| `toHaveText()`              | Phần tử có đoạn text đúng                     | `await expect(locator).toHaveText('Submit');`                   |
+| `toHaveValue()`             | Input có giá trị xác định                     | `await expect(locator).toHaveValue('John Doe');`                |
+| `toHaveValues()`            | Select có các option được chọn                | `await expect(locator).toHaveValues(['option1', 'option2']);`   |
+| `page.toHaveScreenshot()`   | Page khớp ảnh chụp màn hình                   | `await expect(page).toHaveScreenshot('homepage.png');`          |
+| `page.toHaveTitle()`        | Page có title chính xác                       | `await expect(page).toHaveTitle('Dashboard');`                  |
+| `page.toHaveURL()`          | Page có URL chính xác                         | `await expect(page).toHaveURL('https://example.com/home');`     |
+| `response.toBeOK()`         | HTTP response status 200-299                  | `await expect(response).toBeOK();`                              |
+#### B. Non-Retrying Assertions
+- Những assertion này không retry.
+- Kiểm tra ngay lập tức và trả về kết quả.
+- Dùng cho các kiểm tra giá trị tĩnh, không liên quan UI thay đổi theo thời gian.
+- Dùng sai chỗ (vd kiểm tra UI bất đồng bộ) dễ dẫn đến test flaky.
+
+# Các Assertion thường dùng trong Jest (Tiếng Việt)
+
+| **Assertion**                        | **Mô tả**                                 | **Ví dụ (JavaScript)**                                  |
+|-------------------------------------|-------------------------------------------|----------------------------------------------------------|
+| `toBe()`                            | Giá trị bằng nhau                         | `expect(value).toBe(42);`                               |
+| `toBeCloseTo()`                     | Giá trị số gần đúng                       | `expect(value).toBeCloseTo(3.14, 2);`                    |
+| `toBeDefined()`                     | Giá trị không undefined                   | `expect(value).toBeDefined();`                           |
+| `toBeFalsy()`                       | Giá trị falsy (`false`, `0`, `null`...)   | `expect(value).toBeFalsy();`                             |
+| `toBeGreaterThan()`                | Giá trị lớn hơn                           | `expect(value).toBeGreaterThan(10);`                     |
+| `toBeGreaterThanOrEqual()`         | Giá trị lớn hơn hoặc bằng                 | `expect(value).toBeGreaterThanOrEqual(10);`              |
+| `toBeInstanceOf()`                  | Là instance của class                     | `expect(value).toBeInstanceOf(MyClass);`                 |
+| `toBeLessThan()`                    | Giá trị nhỏ hơn                           | `expect(value).toBeLessThan(20);`                        |
+| `toBeLessThanOrEqual()`            | Giá trị nhỏ hơn hoặc bằng                 | `expect(value).toBeLessThanOrEqual(20);`                 |
+| `toBeNaN()`                         | Giá trị là `NaN`                          | `expect(value).toBeNaN();`                               |
+| `toBeNull()`                        | Giá trị là `null`                         | `expect(value).toBeNull();`                              |
+| `toBeTruthy()`                      | Giá trị truthy                            | `expect(value).toBeTruthy();`                            |
+| `toBeUndefined()`                   | Giá trị `undefined`                       | `expect(value).toBeUndefined();`                         |
+| `toContain()`                       | Chuỗi hoặc mảng chứa phần tử              | `expect(array).toContain('item');`                       |
+| `toContainEqual()`                  | Mảng chứa phần tử tương tự                | `expect(array).toContainEqual({ id: 1 });`               |
+| `toEqual()`                         | So sánh deep equality                     | `expect(obj).toEqual({ a: 1, b: 2 });`                   |
+| `toHaveLength()`                    | Mảng hoặc chuỗi có độ dài                 | `expect(array).toHaveLength(3);`                         |
+| `toHaveProperty()`                  | Object có property                        | `expect(obj).toHaveProperty('name');`                    |
+| `toMatch()`                         | Chuỗi khớp regex                          | `expect(str).toMatch(/hello/i);`                         |
+| `toMatchObject()`                   | Object chứa các property xác định         | `expect(obj).toMatchObject({ a: 1 });`                   |
+| `toStrictEqual()`                   | So sánh chính xác cả kiểu dữ liệu         | `expect(obj).toStrictEqual({ a: 1 });`                   |
+| `toThrow()`                         | Hàm ném lỗi                               | `expect(() => func()).toThrow();`                        |
+| `any()`                             | Khớp mọi kiểu dữ liệu                     | `expect(value).any(Number);`                             |
+| `anything()`                        | Khớp mọi giá trị                          | `expect(value).anything();`                              |
+| `arrayContaining()`                 | Mảng chứa phần tử cụ thể                  | `expect(array).arrayContaining(['foo']);`                |
+| `closeTo()`                         | Số gần đúng                                | `expect(value).closeTo(3.14, 2);`                         |
+| `objectContaining()`               | Object chứa property xác định             | `expect(obj).objectContaining({ a: 1 });`                |
+| `stringContaining()`               | Chuỗi chứa substring                      | `expect(str).stringContaining('hello');`                 |
+| `stringMatching()`                 | Chuỗi khớp regex                          | `expect(str).stringMatching(/hello/i);`                  |
 
 ## 5. Data Driven Test
 
@@ -121,9 +294,7 @@ for (const data of testData) {
   });
 }
 ```
-
 ---
-
 ## 6. Tổ chức code với POM (Page Object Model), Visual Testing
 
 ### POM là gì?
