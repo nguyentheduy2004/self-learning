@@ -273,7 +273,93 @@ Lợi ích:
 | `stringContaining()`               | Chuỗi chứa substring                      | `expect(str).stringContaining('hello');`                 |
 | `stringMatching()`                 | Chuỗi khớp regex                          | `expect(str).stringMatching(/hello/i);`                  |
 
-## 6. Data Driven Test
+## 6. Auto-waiting
+- Là cơ chế tự động chờ đợi mà Playwright sử dụng để đảm bảo các thao tác trên trang web diễn ra khi phần tử sẵn sàng và trạng thái phù hợp, mà bạn không cần phải tự viết các đoạn code chờ (wait) phức tạp.
+- Playwright sẽ tự động chờ đợi (auto-wait) các kiểm tra này thành công trong khoảng thời gian timeout (mặc định 5s).
+- Nếu kiểm tra không thành công sau timeout, hành động sẽ bị lỗi TimeoutError.
+### A. Các Kiểm Tra Đối Với Phần Tử
+| **Kiểm tra**        | **Ý nghĩa**                                                                 |
+|---------------------|------------------------------------------------------------------------------|
+| **Visible**         | Phần tử phải hiển thị (không bị ẩn, có kích thước khác 0, không `display: none`) |
+| **Stable**          | Phần tử không đang di chuyển hoặc chuyển động (bounding box giữ nguyên qua 2 frame) |
+| **Receives Events** | Phần tử có thể nhận sự kiện (không bị che phủ bởi phần tử khác, là mục tiêu của sự kiện) |
+| **Enabled**         | Phần tử không bị disable (không có thuộc tính `disabled` hoặc `aria-disabled=true`) |
+| **Editable**        | Phần tử có thể chỉnh sửa (không `readonly`, không `disabled`)   
+
+#### Bảng Điều Kiện Kiểm Tra Cho Các Hành Động `locator`
+
+| **Action**                     | **Visible** | **Stable** | **Receives Events** | **Enabled** | **Editable** |
+|--------------------------------|-------------|------------|----------------------|-------------|---------------|
+| `locator.check()`              | Yes         | Yes        | Yes                  | Yes         | -             |
+| `locator.click()`              | Yes         | Yes        | Yes                  | Yes         | -             |
+| `locator.dblclick()`           | Yes         | Yes        | Yes                  | Yes         | -             |
+| `locator.setChecked()`         | Yes         | Yes        | Yes                  | Yes         | -             |
+| `locator.tap()`                | Yes         | Yes        | Yes                  | Yes         | -             |
+| `locator.uncheck()`            | Yes         | Yes        | Yes                  | Yes         | -             |
+| `locator.hover()`              | Yes         | Yes        | Yes                  | -           | -             |
+| `locator.dragTo()`             | Yes         | Yes        | Yes                  | -           | -             |
+| `locator.screenshot()`         | Yes         | Yes        | -                    | -           | -             |
+| `locator.fill()`               | Yes         | -          | -                    | Yes         | Yes           |
+| `locator.clear()`              | Yes         | -          | -                    | Yes         | Yes           |
+| `locator.selectOption()`       | Yes         | -          | -                    | Yes         | -             |
+| `locator.selectText()`         | Yes         | -          | -                    | -           | -             |
+| `locator.scrollIntoViewIfNeeded()` | -       | Yes        | -                    | -           | -             |
+| `locator.blur()`               | -           | -          | -                    | -           | -             |
+| `locator.dispatchEvent()`      | -           | -          | -                    | -           | -             |
+| `locator.focus()`              | -           | -          | -                    | -           | -             |
+| `locator.press()`              | -           | -          | -                    | -           | -             |
+| `locator.pressSequentially()`  | -           | -          | -                    | -           | -             |
+| `locator.setInputFiles()`      | -           | -          | -                    | -           | -             |
+
+### B. Force Option
++ Một số action (ví dụ: locator.click({ force: true })) cho phép bỏ qua một số kiểm tra không cần thiết, dùng khi bạn chắc chắn muốn thao tác bất chấp trạng thái phần tử (ví dụ ẩn, không nhận sự kiện,...).
+### C. Auto-Retrying Assertions
+
+| **Assertion**                             | **Ý nghĩa**                             |
+|------------------------------------------|------------------------------------------------------|
+| `expect(locator).toBeAttached()`         | Phần tử đã được gắn vào DOM                          |
+| `expect(locator).toBeChecked()`          | Checkbox được chọn                                   |
+| `expect(locator).toBeDisabled()`         | Phần tử bị vô hiệu hóa                               |
+| `expect(locator).toBeEditable()`         | Phần tử có thể chỉnh sửa                             |
+| `expect(locator).toBeEmpty()`            | Phần tử (container) rỗng                             |
+| `expect(locator).toBeEnabled()`          | Phần tử được kích hoạt                               |
+| `expect(locator).toBeFocused()`          | Phần tử đang được focus                              |
+| `expect(locator).toBeHidden()`           | Phần tử không hiển thị (ẩn)                          |
+| `expect(locator).toBeInViewport()`       | Phần tử nằm trong vùng nhìn thấy (viewport)          |
+| `expect(locator).toBeVisible()`          | Phần tử hiển thị trên giao diện                      |
+| `expect(locator).toContainText()`        | Phần tử chứa đoạn văn bản xác định                   |
+| `expect(locator).toHaveAttribute()`      | Phần tử có thuộc tính DOM xác định                   |
+| `expect(locator).toHaveClass()`          | Phần tử có class tương ứng                           |
+| `expect(locator).toHaveCount()`          | Danh sách có số phần tử con đúng                     |
+| `expect(locator).toHaveCSS()`            | Phần tử có thuộc tính CSS xác định                   |
+| `expect(locator).toHaveId()`             | Phần tử có thuộc tính ID xác định                    |
+| `expect(locator).toHaveJSProperty()`     | Phần tử có thuộc tính JavaScript                     |
+| `expect(locator).toHaveText()`           | Phần tử có nội dung văn bản chính xác                |
+| `expect(locator).toHaveValue()`          | Input có giá trị xác định                            |
+| `expect(locator).toHaveValues()`         | Select có các option được chọn                       |
+| `expect(page).toHaveTitle()`             | Trang có tiêu đề xác định                            |
+| `expect(page).toHaveURL()`               | Trang có URL xác định                                |
+| `expect(response).toBeOK()`              | Phản hồi có trạng thái thành công (200–299)          |
+### D. Visible 
+- Phần tử được xem là visible nếu:
+  - Có bounding box không rỗng (kích thước khác 0)
+  - Không có display:none
+- Lưu ý:
+  - Phần tử có opacity 0 vẫn được xem là visible
+  - Phần tử kích thước 0 không được xem là visible
+### E. Enabled
+Phần tử được xem là enabled nếu:
+  - Không có thuộc tính disabled trên các thẻ `<button>, <input>, <select>, <textarea>,...`
+  - Không thuộc nhóm bị disable bởi `<fieldset disabled>`
+  - Không có aria-disabled="true" trên hoặc trên tổ tiên
+### F. Editable
+- Phần tử là editable khi:
+  - Được enable
+  - Không có thuộc tính readonly hoặc aria-readonly="true"
+### G. Stable
+- Element được xem là "stable" (ổn định) khi:
+  - Kích thước và vị trí của nó (bounding box) không thay đổi qua ít nhất hai frame liên tiếp của animation hoặc render.
+## 7. Data Driven Test
 
 Tạo test chạy với nhiều dữ liệu khác nhau:
 
@@ -293,7 +379,7 @@ for (const data of testData) {
 }
 ```
 ---
-## 7. Tổ chức code với POM (Page Object Model), Visual Testing
+## 8. Tổ chức code với POM (Page Object Model), Visual Testing
 
 ### POM là gì?
 
@@ -347,7 +433,7 @@ So sánh ảnh để phát hiện thay đổi giao diện.
 
 ---
 
-## 8. Configuration nâng cao, Test Generator
+## 9. Configuration nâng cao, Test Generator
 
 ### Configuration nâng cao
 
@@ -379,7 +465,7 @@ Giao diện sẽ ghi thao tác và xuất script ở định dạng JS hoặc Py
 
 ---
 
-## 9. API Testing với Playwright
+## 10. API Testing với Playwright
 
 Playwright hỗ trợ gửi request API.
 
