@@ -207,7 +207,7 @@ Lợi ích:
   + Giảm tình trạng test flakiness (thỉnh thoảng fail do đợi không đủ lâu).
   + Không cần tự viết vòng lặp chờ, Playwright xử lý giúp.
 
-| **Assertion**                | **Mô tả**                                      | **Ví dụ (JavaScript/TypeScript)**                              |
+| **Assertion**                | **Mô tả**                                      | **Ví dụ**                              |
 |-----------------------------|-----------------------------------------------|-----------------------------------------------------------------|
 | `toBeAttached()`            | Phần tử có trong DOM                          | `await expect(locator).toBeAttached();`                         |
 | `toBeChecked()`             | Checkbox hoặc radio button được check         | `await expect(locator).toBeChecked();`                          |
@@ -241,9 +241,7 @@ Lợi ích:
 - Dùng cho các kiểm tra giá trị tĩnh, không liên quan UI thay đổi theo thời gian.
 - Dùng sai chỗ (vd kiểm tra UI bất đồng bộ) dễ dẫn đến test flaky.
 
-# Các Assertion thường dùng trong Jest (Tiếng Việt)
-
-| **Assertion**                        | **Mô tả**                                 | **Ví dụ (JavaScript)**                                  |
+| **Assertion**                        | **Mô tả**                                 | **Ví dụ**                                  |
 |-------------------------------------|-------------------------------------------|----------------------------------------------------------|
 | `toBe()`                            | Giá trị bằng nhau                         | `expect(value).toBe(42);`                               |
 | `toBeCloseTo()`                     | Giá trị số gần đúng                       | `expect(value).toBeCloseTo(3.14, 2);`                    |
@@ -275,7 +273,7 @@ Lợi ích:
 | `stringContaining()`               | Chuỗi chứa substring                      | `expect(str).stringContaining('hello');`                 |
 | `stringMatching()`                 | Chuỗi khớp regex                          | `expect(str).stringMatching(/hello/i);`                  |
 
-## 5. Data Driven Test
+## 6. Data Driven Test
 
 Tạo test chạy với nhiều dữ liệu khác nhau:
 
@@ -295,7 +293,7 @@ for (const data of testData) {
 }
 ```
 ---
-## 6. Tổ chức code với POM (Page Object Model), Visual Testing
+## 7. Tổ chức code với POM (Page Object Model), Visual Testing
 
 ### POM là gì?
 
@@ -349,7 +347,7 @@ So sánh ảnh để phát hiện thay đổi giao diện.
 
 ---
 
-## 7. Configuration nâng cao, Test Generator
+## 8. Configuration nâng cao, Test Generator
 
 ### Configuration nâng cao
 
@@ -381,7 +379,7 @@ Giao diện sẽ ghi thao tác và xuất script ở định dạng JS hoặc Py
 
 ---
 
-## 8. API Testing với Playwright
+## 9. API Testing với Playwright
 
 Playwright hỗ trợ gửi request API.
 
