@@ -193,8 +193,21 @@ Lời khuyên sử dụng
 - Luôn ưu tiên dùng auto-retrying assertions khi kiểm tra trạng thái UI hoặc page.
 - Khi cần kiểm tra giá trị hoặc logic thuần (không phụ thuộc trạng thái UI), dùng non-retrying assertion.
 - Nếu cần retry với logic phức tạp, có thể dùng thêm:
-  + expect.poll() — poll giá trị cho đến khi thỏa điều kiện,
-  + expect.toPass() — để retry custom assertion.
+  + expect.poll() — poll giá trị cho đến khi thỏa điều kiện. Dùng khi giá trị thay đổi theo thời gian.
+```js
+await expect.poll(async () => {
+  return await page.locator('#status').textContent();
+}).toBe('Success');
+//Playwright sẽ lặp lại việc lấy giá trị và kiểm tra, cho đến khi điều kiện đúng (Success).
+```
+  + expect.toPass() — để retry custom assertion. Dùng khi kiểm tra nhiều bước, hoặc custom logic.
+```js
+await expect(async () => {
+  const items = await page.locator('.item');
+  expect(await items.count()).toBe(5); // số lượng item phải là 5
+}).toPass();
+//Hàm expect(() => {...}).toPass() sẽ thực hiện lại đoạn code trong callback nhiều lần cho đến khi tất cả các dòng kiểm tra đều thành công
+```
 
 
 #### A. Auto-retrying assertions
